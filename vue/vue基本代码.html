@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+<!--vue实例所控制的这个元素区域就是MVVM中的V-->
+<div id="app">
+    <p>{{msg}}</p>
+</div>
+<script>
+    //new出来的vm对象就是VM调度者
+    var vm = new Vue({
+        el: '#app',
+        //data为M专门用来保存每个页面的数据
+        data: {
+            msg: 'hello world'
+        }
+    });
+</script>
+</body>
+</html>

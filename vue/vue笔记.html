@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!--
+v-cloak 能够解决插值表达式闪烁问题{{msg}}
+<p v-cloak></p>
+v-text="msg"没有闪烁问题和{{msg}}效果一样，v-text会覆盖元素中原本内容，插值表达式不会
+<p v-text="msg"></p>
+v-html会覆盖元素内容，可以把内容当做html插入
+<p v-html="msg"></p>
+v-bind用于绑定属性简写为 :要绑定的属性
+<input type="button" value="按钮" v-bind:title="mytitle+'123'">
+v-on绑定事件缩写@
+<input type="button" value="按钮" v-on:click="show">
+
+
+
+
+
+
+
+-->
+<div id="app"></div>
+<script src="./lib/vue-2.4.0.js"></script>
+<script>
+    /**/
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            mytitile:'123'
+        },
+        methods:{//定义所有可用的方法
+            show:function (){
+                alert('hello')
+            }
+        }
+    })
+</script>
+</body>
+</html>
