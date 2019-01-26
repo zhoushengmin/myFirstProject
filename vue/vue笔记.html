@@ -6,24 +6,131 @@
 </head>
 <body>
 <!--
-v-cloak 能够解决插值表达式闪烁问题{{msg}}
+    =============================1===================================================
+------------v-cloak 能够解决插值表达式闪烁问题{{msg}}
 <p v-cloak></p>
-v-text="msg"没有闪烁问题和{{msg}}效果一样，v-text会覆盖元素中原本内容，插值表达式不会
+
+-------v-text="msg"没有闪烁问题和{{msg}}效果一样，v-text会覆盖元素中原本内容，插值表达式不会
 <p v-text="msg"></p>
+
 v-html会覆盖元素内容，可以把内容当做html插入
 <p v-html="msg"></p>
-v-bind用于绑定属性简写为 :要绑定的属性
+
+------------v-bind用于绑定属性简写为 :要绑定的属性，只能实现数据的单向绑定
 <input type="button" value="按钮" v-bind:title="mytitle+'123'">
-v-on绑定事件缩写@
+
+-----v-model可以实现表单元素和model中数据双向绑定,只能用表单元素中input select checkbox textarea
+<input type="button" value="按钮" v-model="mytitle">
+
+------------v-on绑定事件缩写@
 <input type="button" value="按钮" v-on:click="show">
 
+------------.stop阻止事件冒泡
+<input type="button" value="按钮" @click.stop="show">
 
+------------.prevent阻止默认行为
+<a href="www.baidu.com" @click.prevent="linkClick"></a>
 
+------------.capture从外1到里2捕获
+<div @click="1">
+    <input @click="2"> 
+</div>
 
+-------------.self只有点击当前元素的时候才会触发事件
+-------------.once只触发一次
 
+-------------绑定class类样式,如果用三元表达式在data中定义flag:true显示
+<h1 :class="['red','italic',flag?'activ':'']">123</h1>
+或<h1 :class="['red','italic',{'active':flag}]">123</h1> 代替三元表达式
+---------直接使用对象
+<h1 :class="classObj">123</h1>
+data中创建 classObj:{red:true,italic:true,active:true}
 
+--------有-的加引号，也可以在data中定义，引用data中2个对象用[obj1,obj2]
+<h1 :style="{color:'red','font-size':50}">123</h1>
 
+--------------v-for循环遍历
+<p v-for="item in list">{{item}}</p>
+<p v-for="(item,i) in list">索引值:{{i}}----每一项:{{item}}</p>
+data: {list:[1,2,3,4,5,6]}
+
+v-for循环的时候key属性只能使用number或string,保证数据唯一性
+<p v-for="item in list" :key="item.id">{{item.id}}---{{item.name}}</p>
+
+----------------v-for遍历对象
+<p v-for="(val,key,i) in user">值:{{val}}----键:{{key}}----索引{{i}}</p>
+user:{id:1,name:'小明',gender:'男'}
+
+----------------v-for遍历,in后面也可以放数字 表示循环次数,count值从1开始
+<p v-for="count in 10">这是第{{count}}次循环</p>
+
+-------v-if每次都会重新删除或创建元素
+-------v-show 改变display:none 样式
+<input type="button" value="按钮" @click="flag=!flag">
+<h1 v-if="flag">123</h1>  //切换性能消耗较高
+<h1 v-show="flag">123</h1> //渲染消耗较高
+data:{flag:true}
+@click="可以直接写代码"
+
+访问data上的数据或者要访问methods中的方法必须带this
 -->
+
+<!-- 
+===========================2============================================
+加()可以传参
+<input type="button" value="添加" class="btn btn-primary" @click="add()">
+
+//forEach some filter findIndex 都属于数组新方法，都会对数组的每一项进行遍历，执行相关操作
+
+过滤器调用时候的格式  {{name|nameope(过滤器名称)}} 输出name的值之前先调用nameope(过滤器名称)处理
+
+过滤器定义语法 ,第一个参数永远都是过滤器管道符前面传递过来的数据
+Vue.filter('过滤器名称'，function(name){}) 
+
+替换字符串的replace方法，第一个参数可以定义一个正则表达式 /1/g 全局匹配
+
+自定义私有过滤器
+methods:{},
+filters:{ 定义私有过滤器有两个条件[过滤器名称和处理函数]，过滤器调用采用就近原则，
+私有和全局过滤器一样名称，优先调用私有过滤器
+    dateFormat:function(dateStr,pattern){}
+}
+
+padStart(maxLength,fillString='')头部填充字符串 padEnd尾部填充
+dt.getHours().toString().padStart(2,'0') 前面补0 补齐两位
+
+按键修饰符@keyup.enter="add" 回车键抬起,执行add函数
+@keyup.keycode码值 113是f2
+
+Vue中所有的指令，在调用的时候都以v-开头
+//自定义全局按键修饰符
+// Vue.config.keyCodes.f2=113
+//参数1指令的名称不需要加v- 调用的时候必须加v-
+//参数2是对象，有一些指令相关函数，可以在特定阶段执行相关操作
+Vue.directive('focus',{
+    bind:function(el){//每当指令绑定到元素上的时候，会立即执行这个bind函数，只执行一次
+    //在每个函数中第一个参数永远是el,表示被绑定了指令的那个元素，el是一个原生的js对象
+    //在元素刚绑定了指令的时候还没插入到DOM中时调用focus方法没有作用，只有插入DOM后才能获取焦点
+        //el.focus()
+    },
+    inserted:function(el){//当元素插入到DOM中时会执行，只触发一次
+        el.focus()
+    },
+    updated:function(el){//VNode更新时会执行，可能触发多次
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+ -->
 <div id="app"></div>
 <script src="./lib/vue-2.4.0.js"></script>
 <script>

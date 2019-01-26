@@ -8,27 +8,34 @@
 <body>
 <div id="app">
     <input type="button" value="开始" @click="start"/>
-    <input type="button" value="停止"/>
+    <input type="button" value="停止" @click="stop"/>
     <h4>{{msg}}</h4>
 </div>
 <script>
     var vm=new Vue({
         el:'#app',
         data:{
-            msg:'跑马灯,跑马灯,跑马灯'
+            msg:'跑马灯,跑马灯,跑马灯',
+            intervalId:null//在data上定义定时器id
         },
-        methods:{
-            start(){
-
-    }
-        }
-//        methods:{
-//            start(){
-//               console.log(this.msg)
-//                var start=this.msg.substring(0,1)
-//
-//            }
-//        }
+       methods:{
+           start(){
+            // console.log(this.msg)
+            // 获取到头的第一个字符
+            if(this.intervalId!=null)return;
+            this.intervalId = setInterval(()=>{
+            var start=this.msg.substring(0,1)
+            // 获取后面的所有字符
+            var end=this.msg.substring(1)
+            // 重新拼接得到新的字符串，并赋值给this.msg
+            this.msg=end+start
+            },400)  
+           },
+           stop(){
+               clearInterval(this.intervalId)
+               this.intervalId=null;
+           }
+       }
     })
 </script>
 </body>
