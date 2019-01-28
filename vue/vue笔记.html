@@ -111,24 +111,118 @@ Vue.directive('focus',{
     bind:function(el){//每当指令绑定到元素上的时候，会立即执行这个bind函数，只执行一次
     //在每个函数中第一个参数永远是el,表示被绑定了指令的那个元素，el是一个原生的js对象
     //在元素刚绑定了指令的时候还没插入到DOM中时调用focus方法没有作用，只有插入DOM后才能获取焦点
-        //el.focus()
+        样式写在bind中
+        el.style.color='red'
     },
     inserted:function(el){//当元素插入到DOM中时会执行，只触发一次
+        行为方法写在inserted中
         el.focus()
     },
     updated:function(el){//VNode更新时会执行，可能触发多次
     }
 })
 
+自定义私有过滤器
+methods:{},
+directives:{ 
+    'fontweight':{
+        bind:function(el,binding){
+            el.style.fontWeight=binding.value
+        }
+    }
+}
 
+函数简写
+相当于在bing和update上做
+Vue.directive('color',function(el,binding){
+    el.style.color='red'
+})
+私有简写
+methods:{},
+directives:{ 
+    'fontsize':function(el,binding){这个function等同于把代码写到了bing和update上
+        el.style.fontSize=parseint(binding.value)+'px'
+    }
+}
 
+生命周期函数beforeCreate(){
+    在执行时候，data和methods中的数据都还没有初始化
+}
+生命周期函数created(){
+    在created中，data和methods都已经被初始化好了
+}
+生命周期函数beforeMount(){
+    表示模板已经在内存中编译完成了，但是尚未把模板渲染到页面中
+    在执行的时候，页面中的元素，还没有被真正替换过来，只是之前写的一些模板字符串
+}
+生命周期函数mounted(){
+    表示内存中的模板已经真是的挂载到页面中，用户已经可以看到渲染好的页面了
+    mounted是实例创建期间的最后一个生命周期函数，当执行完mounted就表示
+    实例已经被完全创建好了，此时如果没有其他操作的话，这个实例就在内存中不动
+    表示整个Vue实例已经初始化完毕，进入运行阶段
+}
 
+运行中的两个事件
+beforeUpdate(){
+    数据更新时执行，执行时页面中显示的数据还是旧的，
+    此时data数据是最新的，页面尚未知最新的数据保持同步
+}
+updated(){
+    数据更新时执行,执行的时候页面和data数据已经保持同步了，都是最新的
+}
 
+销毁组件*
+beforeDestroy(){
+    进入销毁阶段，实例上的所有data和所有methods以及过滤器、指令都处于可用状态，还没有真正执行销毁
+}
+destroyed(){
+    完全销毁不可用
+}
 
+get/post/jsonp请求
+导入vue-resource
+this.$http.get('/请求地址',[options]可选项).then(successCallback,errorCallback可选)
+this.$http.get('/请求地址',[options]可选项).then(function(result){
+    //result.body拿到服务器返回成功的数据
+    console.log(result)
+})
 
+通过post方法的第三个参数，配置对象以哪种形式提交，application/x-www-form-urlencoded
+{emulateJSON:true}设置提交的内容类型为普通表单数据格式
+参数2：要提交给服务器的数据，要以对象形式提交给服务器{name:this.name}
+=>默认为密名函数
+this.$http.post('/请求地址',{},{emulateJSON:true}).then(result=>{
+    console.log(result.body)
+})
 
+this.$http.jsonp('/请求地址').then(result=>{
+    console.log(result.body)
+})
 
+Vue.http.options.root='http://www.liulongbin.top:3005/';
+    //全局启用emulateJSON选项,post第三个参数
+    Vue.http.options.emulateJSON=true; 
 
+===========================================动画=======================================
+<transition></transition> 是vue官方提供的
+
+duration统一设置动画入场离场时间
+分开设置:duration="{enter:200,leave:400}"
+<transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="1000">
+        <h3 v-if="flag" class="animated">这是一个h3</h3>
+      </transition>
+在实现列表过渡的时候，如果需要过渡的元素是通过v-for循环渲染出来的不能用transition，
+用<transition-group></transition-group>
+
+组件中的data为一个function,还必须返回一个对象,和实例中data使用方式完全一样
+Vue.component('mycom1', {
+      template: '<h1>{{msg}}</h1>'
+      data:function(){
+        return {
+          msg: '这是组件中data定义的数据'
+        }
+      }
+    })
 
  -->
 <div id="app"></div>
