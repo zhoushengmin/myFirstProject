@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../lib/vue-2.4.0.js"></script>
+</head>
+<body>
+<div id="app">
+  <!-- <input type="text" v-model="firstname" @keyup="getFullname">+
+  <input type="text" v-model="lastname" @keyup="getFullname">= -->
+  <input type="text" v-model="firstname">+
+  <input type="text" v-model="lastname">=
+  <input type="text" v-model="fullname">
+</div>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+          firstname:'',
+          lastname:'',
+          fullname:'',
+        },
+        methods:{
+          // getFullname(){
+          //   this.fullname=this.firstname+'-'+this.lastname
+          // }
+        },
+        watch:{//使用watch可以监视data中指定的数据变化，触发watch中对应的funciton处理函数
+          'firstname':function(newVal,oldVal){
+            // console.log('发生变化')
+            // this.fullname=this.firstname+'-'+this.lastname
+            // console.log(newVal+'-----'+oldVal)
+            this.fullname=newVal+'-'+this.lastname
+          },
+          'lastname':function(newVal){
+            this.fullname=this.firstname+'-'+newVal
+          },// 监听路由地址的改变
+          // '$route.path':function(newVal,oldVal){
+          //   // console.log(newVal+'---'+oldVal)
+          //   if(newVal==='/login'){
+          //     console.log('登录页面')
+          //   }else if(newVal==='/register'){
+          //     console.log('注册页面')
+          //   }
+            
+          // }
+        }
+    });
+</script>
+</body>
+</html>
