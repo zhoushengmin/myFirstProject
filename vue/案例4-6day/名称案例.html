@@ -19,32 +19,38 @@
         data: {
           firstname:'',
           lastname:'',
-          fullname:'',
+          // fullname:'',
         },
         methods:{
           // getFullname(){
           //   this.fullname=this.firstname+'-'+this.lastname
           // }
         },
-        watch:{//使用watch可以监视data中指定的数据变化，触发watch中对应的funciton处理函数
-          'firstname':function(newVal,oldVal){
-            // console.log('发生变化')
-            // this.fullname=this.firstname+'-'+this.lastname
-            // console.log(newVal+'-----'+oldVal)
-            this.fullname=newVal+'-'+this.lastname
-          },
-          'lastname':function(newVal){
-            this.fullname=this.firstname+'-'+newVal
-          },// 监听路由地址的改变
-          // '$route.path':function(newVal,oldVal){
-          //   // console.log(newVal+'---'+oldVal)
-          //   if(newVal==='/login'){
-          //     console.log('登录页面')
-          //   }else if(newVal==='/register'){
-          //     console.log('注册页面')
-          //   }
+        // watch:{//使用watch可以监视data中指定的数据变化，触发watch中对应的funciton处理函数
+        //   'firstname':function(newVal,oldVal){
+        //     // console.log('发生变化')
+        //     // this.fullname=this.firstname+'-'+this.lastname
+        //     // console.log(newVal+'-----'+oldVal)
+        //     this.fullname=newVal+'-'+this.lastname
+        //   },
+        //   'lastname':function(newVal){
+        //     this.fullname=this.firstname+'-'+newVal
+        //   },// 监听路由地址的改变
+        //   // '$route.path':function(newVal,oldVal){
+        //   //   // console.log(newVal+'---'+oldVal)
+        //   //   if(newVal==='/login'){
+        //   //     console.log('登录页面')
+        //   //   }else if(newVal==='/register'){
+        //   //     console.log('注册页面')
+        //   //   }
             
-          // }
+        //   // }
+        // }
+        //计算属性，只要计算属性function内部所用到的data中的数据发送变化就会立即重新计算属性的值，计算属性的求值结果会缓存起来
+        computed:{
+          'fullname':function(){
+            return this.firstname+'-'+this.lastname
+          }
         }
     });
 </script>
